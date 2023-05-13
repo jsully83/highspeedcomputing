@@ -29,17 +29,15 @@ int main (int argc, char** argv) {
     }
 
     // We don't want the last process to send back to process 0. Every other process should 
-    // now be set to receive the decremented value from the next higher process. Process size - 1
-    // skips this and decrements the value to send to process size - 2.
+    // now be set to receive right the decremented value from the next higher process after \
+    // it's done sending. Process size - 1 skips this and decrements the value to send to 
+    // process size - 2.
     if(rank!=size-1){
         pingpongs++;
         printf("Process %d sends value %d to process %d.\n", rank, pingpongs, (rank + 1) % size);
         MPI_Send(&pingpongs, 1, MPI_INT, (rank + 1) % size, 0, MPI_COMM_WORLD);
-    }
-    else{    
-        
         MPI_Recv(&pingpongs, 1, MPI_INT, (rank + 1) % size, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        printf("Process %d at Node %s received the value %d. ", rank, processor_name, pingpongs);
+        printf("Process %d at Node %s received the value %d.", rank, processor_name, pingpongs);
     }
 
     // We don't want process 0 to send again.

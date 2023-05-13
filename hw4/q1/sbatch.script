@@ -8,4 +8,13 @@
 #SBATCH --mem=100G
 #SBATCH --partition=short
 #SBATCH --out=out.out
+strigger --set --job_id=%j -f --program=./showoutput.sh
 $SRUN mpirun --mca btl_base_warn_component_unused 0 ./q1.x
+
+# squeue -u $USER
+
+# # Get the job ID.
+# job_id=$SLURM_JOB_ID
+
+# # Print the job ID.
+# echo "The job ID is $job_id"
