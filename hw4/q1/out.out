@@ -1,66 +1,64 @@
-strigger: unrecognized option '--job_id=%j'
-Try "strigger --help" for more information
-Process 0 at Node c0222 starts with value 0
+Process 0 at Node c0395 starts with value 0
 Process 0 sends value 1 to process 1.
-Process 1 at Node c0222 received the value 1. Process 1 sends value 2 to process 2.
-Process 2 at Node c0222 received the value 2. Process 2 sends value 3 to process 3.
-Process 3 at Node c0222 received the value 3. Process 3 sends value 4 to process 4.
-Process 4 at Node c0222 received the value 4. Process 4 sends value 5 to process 5.
-Process 5 at Node c0222 received the value 5. Process 5 sends value 6 to process 6.
-Process 6 at Node c0222 received the value 6. Process 6 sends value 7 to process 7.
-Process 7 at Node c0222 received the value 7. Process 7 sends value 8 to process 8.
-Process 8 at Node c0222 received the value 8. Process 8 sends value 9 to process 9.
-Process 9 at Node c0222 received the value 9. Process 9 sends value 10 to process 10.
-Process 10 at Node c0222 received the value 10. Process 10 sends value 11 to process 11.
-Process 11 at Node c0222 received the value 11. Process 11 sends value 12 to process 12.
-Process 12 at Node c0222 received the value 12. Process 12 sends value 13 to process 13.
-Process 13 at Node c0222 received the value 13. Process 13 sends value 14 to process 14.
-Process 14 at Node c0222 received the value 14. Process 14 sends value 15 to process 15.
-Process 15 at Node c0222 received the value 15. Process 15 sends value 16 to process 16.
-Process 16 at Node c0223 received the value 16. Process 16 sends value 17 to process 17.
-Process 17 at Node c0223 received the value 17. Process 17 sends value 18 to process 18.
-Process 18 at Node c0223 received the value 18. Process 18 sends value 19 to process 19.
-Process 19 at Node c0223 received the value 19. Process 19 sends value 20 to process 20.
-Process 20 at Node c0223 received the value 20. Process 20 sends value 21 to process 21.
-Process 21 at Node c0223 received the value 21. Process 21 sends value 22 to process 22.
-Process 22 at Node c0223 received the value 22. Process 22 sends value 23 to process 23.
-Process 23 at Node c0223 received the value 23. Process 23 sends value 24 to process 24.
-Process 24 at Node c0223 received the value 24. Process 24 sends value 25 to process 25.
-Process 25 at Node c0223 received the value 25. Process 25 sends value 26 to process 26.
-Process 26 at Node c0223 received the value 26. Process 26 sends value 27 to process 27.
-Process 27 at Node c0223 received the value 27. Process 27 sends value 28 to process 28.
-Process 28 at Node c0223 received the value 28. Process 28 sends value 29 to process 29.
-Process 29 at Node c0223 received the value 29. Process 29 sends value 30 to process 30.
-Process 30 at Node c0223 received the value 30. Process 30 sends value 31 to process 31.
-Process 31 at Node c0223 received the value 31. Process 31 sends value 30 to process 30.
-Process 29 at Node c0223 received the value 29.Process 29 sends value 28 to process 28.
-Process 30 at Node c0223 received the value 30.Process 30 sends value 29 to process 29.
-Process 27 at Node c0223 received the value 27.Process 27 sends value 26 to process 26.
-Process 28 at Node c0223 received the value 28.Process 28 sends value 27 to process 27.
-Process 25 at Node c0223 received the value 25.Process 25 sends value 24 to process 24.
-Process 26 at Node c0223 received the value 26.Process 26 sends value 25 to process 25.
-Process 23 at Node c0223 received the value 23.Process 23 sends value 22 to process 22.
-Process 24 at Node c0223 received the value 24.Process 24 sends value 23 to process 23.
-Process 22 at Node c0223 received the value 22.Process 22 sends value 21 to process 21.
-Process 15 at Node c0222 received the value 15.Process 15 sends value 14 to process 14.
-Process 21 at Node c0223 received the value 21.Process 21 sends value 20 to process 20.
-Process 20 at Node c0223 received the value 20.Process 20 sends value 19 to process 19.
-Process 19 at Node c0223 received the value 19.Process 19 sends value 18 to process 18.
-Process 18 at Node c0223 received the value 18.Process 18 sends value 17 to process 17.
-Process 16 at Node c0223 received the value 16.Process 16 sends value 15 to process 15.
-Process 17 at Node c0223 received the value 17.Process 17 sends value 16 to process 16.
-Process 13 at Node c0222 received the value 13.Process 13 sends value 12 to process 12.
-Process 14 at Node c0222 received the value 14.Process 14 sends value 13 to process 13.
-Process 12 at Node c0222 received the value 12.Process 12 sends value 11 to process 11.
-Process 11 at Node c0222 received the value 11.Process 11 sends value 10 to process 10.
-Process 9 at Node c0222 received the value 9.Process 9 sends value 8 to process 8.
-Process 10 at Node c0222 received the value 10.Process 10 sends value 9 to process 9.
-Process 8 at Node c0222 received the value 8.Process 8 sends value 7 to process 7.
-Process 6 at Node c0222 received the value 6.Process 6 sends value 5 to process 5.
-Process 7 at Node c0222 received the value 7.Process 7 sends value 6 to process 6.
-Process 5 at Node c0222 received the value 5.Process 5 sends value 4 to process 4.
-Process 4 at Node c0222 received the value 4.Process 4 sends value 3 to process 3.
-Process 3 at Node c0222 received the value 3.Process 3 sends value 2 to process 2.
-Process 2 at Node c0222 received the value 2.Process 2 sends value 1 to process 1.
-Process 1 at Node c0222 received the value 1.Process 1 sends value 0 to process 0.
-Process 0 at Node c0222 received the value 0.
+Process 1 at Node c0395 received the value 1. Process 1 sends value 2 to process 2.
+Process 2 at Node c0395 received the value 2. Process 2 sends value 3 to process 3.
+Process 3 at Node c0395 received the value 3. Process 3 sends value 4 to process 4.
+Process 4 at Node c0395 received the value 4. Process 4 sends value 5 to process 5.
+Process 5 at Node c0395 received the value 5. Process 5 sends value 6 to process 6.
+Process 6 at Node c0395 received the value 6. Process 6 sends value 7 to process 7.
+Process 7 at Node c0395 received the value 7. Process 7 sends value 8 to process 8.
+Process 8 at Node c0395 received the value 8. Process 8 sends value 9 to process 9.
+Process 9 at Node c0395 received the value 9. Process 9 sends value 10 to process 10.
+Process 10 at Node c0395 received the value 10. Process 10 sends value 11 to process 11.
+Process 11 at Node c0395 received the value 11. Process 11 sends value 12 to process 12.
+Process 12 at Node c0395 received the value 12. Process 12 sends value 13 to process 13.
+Process 13 at Node c0395 received the value 13. Process 13 sends value 14 to process 14.
+Process 14 at Node c0395 received the value 14. Process 14 sends value 15 to process 15.
+Process 15 at Node c0395 received the value 15. Process 15 sends value 16 to process 16.
+Process 16 at Node c0396 received the value 16. Process 16 sends value 17 to process 17.
+Process 17 at Node c0396 received the value 17. Process 17 sends value 18 to process 18.
+Process 18 at Node c0396 received the value 18. Process 18 sends value 19 to process 19.
+Process 19 at Node c0396 received the value 19. Process 19 sends value 20 to process 20.
+Process 20 at Node c0396 received the value 20. Process 20 sends value 21 to process 21.
+Process 21 at Node c0396 received the value 21. Process 21 sends value 22 to process 22.
+Process 22 at Node c0396 received the value 22. Process 22 sends value 23 to process 23.
+Process 23 at Node c0396 received the value 23. Process 23 sends value 24 to process 24.
+Process 24 at Node c0396 received the value 24. Process 24 sends value 25 to process 25.
+Process 25 at Node c0396 received the value 25. Process 25 sends value 26 to process 26.
+Process 26 at Node c0396 received the value 26. Process 26 sends value 27 to process 27.
+Process 27 at Node c0396 received the value 27. Process 27 sends value 28 to process 28.
+Process 28 at Node c0396 received the value 28. Process 28 sends value 29 to process 29.
+Process 29 at Node c0396 received the value 29. Process 29 sends value 30 to process 30.
+Process 30 at Node c0396 received the value 30. Process 30 sends value 31 to process 31.
+Process 31 at Node c0396 received the value 31. Process 31 sends value 30 to process 30.
+Process 28 at Node c0396 received the value 28.Process 28 sends value 27 to process 27.
+Process 29 at Node c0396 received the value 29.Process 29 sends value 28 to process 28.
+Process 30 at Node c0396 received the value 30.Process 30 sends value 29 to process 29.
+Process 22 at Node c0396 received the value 22.Process 22 sends value 21 to process 21.
+Process 23 at Node c0396 received the value 23.Process 23 sends value 22 to process 22.
+Process 24 at Node c0396 received the value 24.Process 24 sends value 23 to process 23.
+Process 25 at Node c0396 received the value 25.Process 25 sends value 24 to process 24.
+Process 26 at Node c0396 received the value 26.Process 26 sends value 25 to process 25.
+Process 27 at Node c0396 received the value 27.Process 27 sends value 26 to process 26.
+Process 20 at Node c0396 received the value 20.Process 20 sends value 19 to process 19.
+Process 21 at Node c0396 received the value 21.Process 21 sends value 20 to process 20.
+Process 18 at Node c0396 received the value 18.Process 18 sends value 17 to process 17.
+Process 19 at Node c0396 received the value 19.Process 19 sends value 18 to process 18.
+Process 15 at Node c0395 received the value 15.Process 15 sends value 14 to process 14.
+Process 17 at Node c0396 received the value 17.Process 17 sends value 16 to process 16.
+Process 14 at Node c0395 received the value 14.Process 14 sends value 13 to process 13.
+Process 16 at Node c0396 received the value 16.Process 16 sends value 15 to process 15.
+Process 12 at Node c0395 received the value 12.Process 12 sends value 11 to process 11.
+Process 13 at Node c0395 received the value 13.Process 13 sends value 12 to process 12.
+Process 8 at Node c0395 received the value 8.Process 8 sends value 7 to process 7.
+Process 9 at Node c0395 received the value 9.Process 9 sends value 8 to process 8.
+Process 10 at Node c0395 received the value 10.Process 10 sends value 9 to process 9.
+Process 11 at Node c0395 received the value 11.Process 11 sends value 10 to process 10.
+Process 5 at Node c0395 received the value 5.Process 5 sends value 4 to process 4.
+Process 6 at Node c0395 received the value 6.Process 6 sends value 5 to process 5.
+Process 7 at Node c0395 received the value 7.Process 7 sends value 6 to process 6.
+Process 4 at Node c0395 received the value 4.Process 4 sends value 3 to process 3.
+Process 2 at Node c0395 received the value 2.Process 2 sends value 1 to process 1.
+Process 3 at Node c0395 received the value 3.Process 3 sends value 2 to process 2.
+Process 1 at Node c0395 received the value 1.Process 1 sends value 0 to process 0.
+Process 0 at Node c0395 received the value 0.

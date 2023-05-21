@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --verbose
+#SBATCH --partition=express
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=5
+#SBATCH --sockets-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=100G
+#SBATCH --job-name=JonsJob
+#SBATCH --out=4nodes_20bins.out
+
+$SRUN mpirun --mca btl_base_warn_component_unused 0 ./q2.exe 20
+
