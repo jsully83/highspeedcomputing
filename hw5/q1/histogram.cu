@@ -4,13 +4,13 @@
 #include <cuda.h>
 #include <random>
 
-__global__ void histogram(int N, int *nums, int *bins, int divisor){
+__global__ void histogram(int N, int *nums, int *bins, int divisor, int n_bins){
     // global thread id
     int id = blockIdx.x * blockDim.x + threadIdx.x;
 
     // check for out of bounds
     if(id < N){
-        atomicAdd(&bins[nums[id]/divisor], 1);
+        atomicAdd(&bins[(nums[id]/divisor) % n_bins], 1);
     }
 }
 
@@ -73,8 +73,7 @@ int main(int argc, char* argv[]){
     // start timing all the device operations
     cudaEventRecord(start, 0);
     for(int i=0; i < 10; i++){
-        histogram<<<gridSize, blockSize>>>(N, d_nums, d_bins, divisor);
-        printf("%i",i);
+        histogram<<<gridSize, blockSize>>>(N, d_nums, d_bins, divisor, N_BINS);
     }
     
     
@@ -85,7 +84,7 @@ int main(int argc, char* argv[]){
 
     // print the bin counts
     for (int i = 0; i < N_BINS; i++) {
-        printf("bin[%i] = %i\n", i, h_bins[i]);
+        printf("bin[%i] = %i\n", i, h_bins[i]/10);
     }
 
     // check how many elements were binned
@@ -94,6 +93,8 @@ int main(int argc, char* argv[]){
         elements += h_bins[i];
     }
     elements = elements / 10;
+
+    // check if all elements were binned
     if(elements == N){
         printf("Success! The histogram counted %i numbers!\n", elements);
     }
