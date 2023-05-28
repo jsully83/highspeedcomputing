@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "../../../home/sullivan.jona/cuda-samples/Samples"
 		}
 	],
 	"settings": {}
