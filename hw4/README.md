@@ -1,7 +1,9 @@
 # HW4
 
-Q1
-run the make file to build the program and execute the sbatch script.
+For both questions you can navigate to hw4/q1 or hw4/q2 and run:
     make
 
-then when the job is done 
+the make file will build the files, call the SBATCH scripts and display the slurm queue.
+
+Output for the programs can be seen in the *.out files.
+
