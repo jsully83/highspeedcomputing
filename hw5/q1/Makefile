@@ -4,4 +4,4 @@ all:
 
 clean:
 	rm histogram
-	rm histogramOMP
+	rm histogramOMPw
