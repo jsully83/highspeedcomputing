@@ -1,0 +1,114 @@
+There were: 0 errors.
+Naive stencil elapsed time: 0.013094 ms.
+A block has 8 threads.
+A grid has 8 blocks.
+There are a total of 64 threads.
+row=2, col=0, ten=2
+row=2, col=1, ten=2
+row=0, col=2, ten=2
+row=1, col=2, ten=2
+row=2, col=2, ten=2
+row=2, col=2, ten=0
+row=2, col=2, ten=1
+row=0, col=0, ten=2
+row=1, col=0, ten=2
+row=0, col=1, ten=2
+row=1, col=1, ten=2
+row=2, col=0, ten=0
+row=2, col=1, ten=0
+row=2, col=0, ten=1
+row=2, col=1, ten=1
+row=0, col=2, ten=0
+row=1, col=2, ten=0
+row=0, col=2, ten=1
+row=1, col=2, ten=1
+row=0, col=0, ten=0
+row=1, col=0, ten=0
+row=0, col=1, ten=0
+row=1, col=1, ten=0
+row=0, col=0, ten=1
+row=1, col=0, ten=1
+row=0, col=1, ten=1
+row=1, col=1, ten=1
+gridIDx=34, tileIdx = 9
+gridIDx=38, tileIdx = 13
+gridIDx=42, tileIdx = 9
+gridIDx=40, tileIdx = 9
+gridIDx=41, tileIdx = 10
+gridIDx=32, tileIdx = 9
+gridIDx=36, tileIdx = 13
+gridIDx=33, tileIdx = 10
+gridIDx=37, tileIdx = 14
+gridIDx=8, tileIdx = 9
+gridIDx=24, tileIdx = 13
+gridIDx=9, tileIdx = 10
+gridIDx=25, tileIdx = 14
+gridIDx=10, tileIdx = 9
+gridIDx=26, tileIdx = 13
+gridIDx=0, tileIdx = 9
+gridIDx=16, tileIdx = 13
+gridIDx=4, tileIdx = 13
+gridIDx=20, tileIdx = 17
+gridIDx=1, tileIdx = 10
+gridIDx=17, tileIdx = 14
+gridIDx=5, tileIdx = 14
+gridIDx=21, tileIdx = 18
+gridIDx=2, tileIdx = 9
+gridIDx=18, tileIdx = 13
+gridIDx=6, tileIdx = 13
+gridIDx=22, tileIdx = 17
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=1
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=1
+blockIdx.x=1, blockIdx.y=1, blockIdx.z=1
+blockIdx.x=1, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=1, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=1, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=1
+blockIdx.x=0, blockIdx.y=1, blockIdx.z=1
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=0
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=1
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=1
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=1
+blockIdx.x=0, blockIdx.y=0, blockIdx.z=1
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=1
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=1, threadIdx.y=1, threadIdx.z=0
+threadIdx.x=0, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=1, threadIdx.y=0, threadIdx.z=1
+threadIdx.x=0, threadIdx.y=1, threadIdx.z=1
+threadIdx.x=1, threadIdx.y=1, threadIdx.z=1
+Naive stencil elapsed time: 0.523434 ms.

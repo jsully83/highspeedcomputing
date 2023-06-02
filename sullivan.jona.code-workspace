@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../../home/sullivan.jona/cuda-samples/Samples"
+		},
+		{
+			"path": "../../../work/methaneai/EarthAI"
 		}
 	],
 	"settings": {}
