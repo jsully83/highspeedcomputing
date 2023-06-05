@@ -5,9 +5,9 @@
 #include <iostream>
 #include <cmath>
 
-#define n 64
-#define BLOCKSIZE 8
-#define TILESIZE 8
+#define n 8
+#define BLOCKSIZE 4
+#define TILESIZE 4
 #define RADIUS 1
 
 static const char *_cudaGetErrorEnum(cudaError_t error) {
@@ -74,7 +74,7 @@ void checkArray(float *b, float a[n][n][n]){
                     errorNum++;
                     printf("Error at i = %i, j = %i, k = %i\n", i, j, k);
                     printf("a[%i][%i][%i] = %f\n", i, j, k, a[i][j][k]);
-                    printf("b[%i][%i][%i] = %f\n", i, j, k, b[i*n*n + j*n + k]);
+                    printf("h_a[%i][%i][%i] = %f\n", i, j, k, b[i*n*n + j*n + k]);
                 }
                 printf("There were: %i errors.\n", errorNum);
 }
@@ -123,6 +123,7 @@ void launchNaiveStencil(float *d_a, float *d_b, float *h_a, size_t tensorBytes){
     dim3 dimBlock(BLOCKSIZE, BLOCKSIZE, 1);
     dim3 dimGrid(gridSize, gridSize, gridSize);
 
+
     // ============  KERNEL LAUNCH ============
     checkCudaErrors(cudaEventRecord(start, 0));
 
@@ -151,80 +152,142 @@ void launchNaiveStencil(float *d_a, float *d_b, float *h_a, size_t tensorBytes){
 
 
 
-__global__ void tiledStencil(float *d_a, float *d_b){
+// __global__ void tiledStencil(float *d_a, float *d_b){
     
-    int row = blockIdx.x * blockDim.x + threadIdx.x;
-    int col = blockIdx.y * blockDim.y + threadIdx.y;
-    int tensor = blockIdx.z * blockDim.z + threadIdx.z;
+//     int row = blockIdx.x * blockDim.x + threadIdx.x;
+//     int col = blockIdx.y * blockDim.y + threadIdx.y;
+//     int tensor = blockIdx.z * blockDim.z + threadIdx.z;
 
-    // extern __shared__ float tile[];
-    __shared__ float tile[TILESIZE][TILESIZE][TILESIZE];
+//     // extern __shared__ float tile[];
+//     __shared__ float tile[TILESIZE][TILESIZE][TILESIZE];
 
-    
-
-    int gridIdx = (row * n * n) + (col * n) + tensor;
-
-    if(gridIdx >= n*n*n) return;
-
-    // printf("row: %i, col: %i, tensor: %i tileIdx_row: %i, tileIdx_col: %i, tileIdx_tensor: %i\n", row, col, tensor, tileIdx_row, tileIdx_col, tileIdx_tensor);
     
 
-    // int tileIdx = blockIdx.x * blockDim.x + (threadIdx.x + RADIUS) + 
-    //               blockIdx.y * blockDim.y + (threadIdx.y + RADIUS) +
-    //               blockIdx.z * blockDim.z + (threadIdx.z + RADIUS);
+//     int gridIdx = (row * n * n) + (col * n) + tensor;
+
+//     if(gridIdx >= n*n*n) return;
+
+//     // printf("row: %i, col: %i, tensor: %i tileIdx_row: %i, tileIdx_col: %i, tileIdx_tensor: %i\n", row, col, tensor, tileIdx_row, tileIdx_col, tileIdx_tensor);
+    
+
+//     // int tileIdx = blockIdx.x * blockDim.x + (threadIdx.x + RADIUS) + 
+//     //               blockIdx.y * blockDim.y + (threadIdx.y + RADIUS) +
+//     //               blockIdx.z * blockDim.z + (threadIdx.z + RADIUS);
                   
 
     
-    // if(row >= n - 1) return;
-    // if(col >= n - 1) return;
-    // if(tensor >= n - 1) return;
+//     // if(row >= n - 1) return;
+//     // if(col >= n - 1) return;
+//     // if(tensor >= n - 1) return;
 
-    tile[threadIdx.x][threadIdx.y][threadIdx.z]= d_b[gridIdx];
-    __syncthreads(); 
+//     tile[threadIdx.x][threadIdx.y][threadIdx.z]= d_b[gridIdx];
+//     __syncthreads(); 
 
-    // printf("d_b[%i] = %f, tile[%i][%i][%i] = %f\n", gridIdx, d_b[gridIdx], threadIdx.x, threadIdx.y, threadIdx.z, tile[threadIdx.x][threadIdx.y][threadIdx.z]);
+//     // printf("d_b[%i] = %f, tile[%i][%i][%i] = %f\n", gridIdx, d_b[gridIdx], threadIdx.x, threadIdx.y, threadIdx.z, tile[threadIdx.x][threadIdx.y][threadIdx.z]);
 
-    // int tileIdx = (blockIdx.x * pow(blockDim.x, 2)) + 
-    //              (blockIdx.y * pow(blockDim.y, 1)) + 
-    //              (blockIdx.z * pow(blockDim.z, 0));
+//     // int tileIdx = (blockIdx.x * pow(blockDim.x, 2)) + 
+//     //              (blockIdx.y * pow(blockDim.y, 1)) + 
+//     //              (blockIdx.z * pow(blockDim.z, 0));
 
-    // we shifted everything by RADIUS so we don't need the last thread in each dimension
-    if (threadIdx.x < 1 || threadIdx.x >= n - 1) return;
-    if (threadIdx.y < 1 || threadIdx.y >= n - 1) return;
-    if (threadIdx.z < 1 || threadIdx.z >= n - 1) return;
+//     // we shifted everything by RADIUS so we don't need the last thread in each dimension
+//     if (threadIdx.x < 1 || threadIdx.x >= n - 1) return;
+//     if (threadIdx.y < 1 || threadIdx.y >= n - 1) return;
+//     if (threadIdx.z < 1 || threadIdx.z >= n - 1) return;
 
     
-    // load the data from global memory into shared memory
-    // tile[tileIdx] = d_b[gridIdx];
+//     // load the data from global memory into shared memory
+//     // tile[tileIdx] = d_b[gridIdx];
     
-       // use the 0 thread to load the halo data
-    // if(threadIdx.x < RADIUS)
-    //     tile[tileIdx - RADIUS] = d_b[gridIdx - RADIUS];
-    //     tile[tileIdx + blockDim.x] = d_b[gridIdx + blockDim.x];
-    
-
-    // if(row == 1 && col == 1 && tensor == 1)
-    //     for(int i = 0; i <= TILESIZE + 1; i++)
-    //         printf("tile[%i] = %f\n", i, tile[i]);
+//        // use the 0 thread to load the halo data
+//     // if(threadIdx.x < RADIUS)
+//     //     tile[tileIdx - RADIUS] = d_b[gridIdx - RADIUS];
+//     //     tile[tileIdx + blockDim.x] = d_b[gridIdx + blockDim.x];
     
 
-    // printf("row=%i, col=%i, ten=%i\n", row, col, tensor);
-    // printf("d_b[%i] = %f, tile[%i] = %f, blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i,  \n", gridIdx, d_b[gridIdx], tileIdx, tile[tileIdx], blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z);
-    // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i\n", blockIdx.x, blockIdx.y, blockIdx.z);
-    // printf("threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i\n", threadIdx.x, threadIdx.y, threadIdx.z);
-
-
-    d_a[gridIdx] = 0.8 * (tile[threadIdx.x-1][threadIdx.y][threadIdx.z] + tile[threadIdx.x+1][threadIdx.y][threadIdx.z] + 
-                      tile[threadIdx.x][threadIdx.y-1][threadIdx.z] + tile[threadIdx.x][threadIdx.y+1][threadIdx.z] + 
-                      tile[threadIdx.x][threadIdx.y][threadIdx.z-1] + tile[threadIdx.x][threadIdx.y][threadIdx.z+1]);
+//     // if(row == 1 && col == 1 && tensor == 1)
+//     //     for(int i = 0; i <= TILESIZE + 1; i++)
+//     //         printf("tile[%i] = %f\n", i, tile[i]);
     
-    // __syncthreads();
-    return;
 
+//     // printf("row=%i, col=%i, ten=%i\n", row, col, tensor);
+//     // printf("d_b[%i] = %f, tile[%i] = %f, blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i,  \n", gridIdx, d_b[gridIdx], tileIdx, tile[tileIdx], blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z);
+//     // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i\n", blockIdx.x, blockIdx.y, blockIdx.z);
+//     // printf("threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i\n", threadIdx.x, threadIdx.y, threadIdx.z);
+
+
+//     d_a[gridIdx] = 0.8 * (tile[threadIdx.x-1][threadIdx.y][threadIdx.z] + tile[threadIdx.x+1][threadIdx.y][threadIdx.z] + 
+//                       tile[threadIdx.x][threadIdx.y-1][threadIdx.z] + tile[threadIdx.x][threadIdx.y+1][threadIdx.z] + 
+//                       tile[threadIdx.x][threadIdx.y][threadIdx.z-1] + tile[threadIdx.x][threadIdx.y][threadIdx.z+1]);
+    
+//     // __syncthreads();
+//     return;
+
+// }
+
+
+__device__ int getTileAdjacent(int i, int j, int k){
+    return ((j) * blockDim.x * blockDim.x + (k) * blockDim.x + (i));
 }
 
-// void launchTiledStencil(float *d_a, float *d_b, float *h_a, size_t tensorBytes){  
+
+__global__ void tiledStencil(float *d_a, float *d_b){
+
+    // create the tiles
+    extern __shared__ float tile[];
+
+
+    // global row column and slice indicies
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+    int tensor = blockIdx.z * blockDim.z + threadIdx.z;
+
+    int tx = threadIdx.x;
+    int ty = threadIdx.y;
+    int tz = threadIdx.z;
     
+    float temp;
+
+    tile[getTileAdjacent(tx, ty, tz)] = d_b[getAdjacent(row,col,tensor)];
+
+    __syncthreads();
+
+    // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i, row = %i, col = %i, ten = %i, d_b[%i] = %f, tile[%i] = %f\n", blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z, row, col, tensor, getAdjacent(row,col,tensor), d_b[getAdjacent(row,col,tensor)], getTileAdjacent(tx, ty, tz), tile[getTileAdjacent(tx, ty, tz)]);
+ 
+
+    if(row > RADIUS - 1 && row < n - RADIUS && col > RADIUS - 1 && col < n - RADIUS  && tensor > RADIUS - 1 && tensor < n - RADIUS){
+        if(tx < blockDim.x - RADIUS && ty < blockDim.y - RADIUS && tz < blockDim.z - RADIUS){
+            if(blockIdx.y == 0 && blockIdx.x == 0 && blockIdx.z == 0){
+                if(tx > RADIUS - 1 && ty > RADIUS - 1 && tz > RADIUS - 1){
+                    temp = 0.8 * (tile[getTileAdjacent(tx-1, ty, tz)] + tile[getTileAdjacent(tx+1, ty, tz)] + 
+                                  tile[getTileAdjacent(tx, ty-1, tz)] + tile[getTileAdjacent(tx, ty+1, tz)] + 
+                                  tile[getTileAdjacent(tx, ty, tz-1)] + tile[getTileAdjacent(tx, ty, tz+1)]);
+                    // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i, row = %i, col = %i, ten = %i\n", blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z, row, col, tensor);
+                    // printf("temp = %f, %f, %f, %f, %f, %f, %f\n", temp, tile[getTileAdjacent(tx-1, ty, tz)], tile[getTileAdjacent(tx+1, ty, tz)], tile[getTileAdjacent(tx, ty-1, tz)], tile[getTileAdjacent(tx, ty+1, tz)], tile[getTileAdjacent(tx, ty, tz-1)], tile[getTileAdjacent(tx, ty, tz+1)]); 
+                }
+            }
+            if(blockIdx.y == 0 && blockIdx.x != 0){
+                if(tz > RADIUS - 1){
+                    temp = 0.8 * (tile[getTileAdjacent(tx-1, ty, tz)] + tile[getTileAdjacent(tx+1, ty, tz)] + 
+                                  tile[getTileAdjacent(tx, ty-1, tz)] + tile[getTileAdjacent(tx, ty+1, tz)] + 
+                                  tile[getTileAdjacent(tx, ty, tz-1)] + tile[getTileAdjacent(tx, ty, tz+1)]);
+                    // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i, row = %i, col = %i, ten = %i\n", blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z, row, col, tensor);
+                    // printf("seed = %f, %f, %f, %f, %f, %f, %f\n", tile[getTileAdjacent(tx, ty, tz)], tile[getTileAdjacent(tx-1, ty, tz)], tile[getTileAdjacent(tx+1, ty, tz)], tile[getTileAdjacent(tx, ty-1, tz)], tile[getTileAdjacent(tx, ty+1, tz)], tile[getTileAdjacent(tx, ty, tz-1)], tile[getTileAdjacent(tx, ty, tz+1)]); 
+                }   
+            }
+            if(blockIdx.x == 0 && blockIdx.y != 0){
+                if(ty > RADIUS - 1){
+                    temp = 0.8 * (tile[getTileAdjacent(tx-1, ty, tz)] + tile[getTileAdjacent(tx+1, ty, tz)] + 
+                                  tile[getTileAdjacent(tx, ty-1, tz)] + tile[getTileAdjacent(tx, ty+1, tz)] + 
+                                  tile[getTileAdjacent(tx, ty, tz-1)] + tile[getTileAdjacent(tx, ty, tz+1)]);
+                    // printf("blockIdx.x=%i, blockIdx.y=%i, blockIdx.z=%i threadIdx.x=%i, threadIdx.y=%i, threadIdx.z=%i, row = %i, col = %i, ten = %i\n", blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z, row, col, tensor);
+                    // printf("seed = %f, %f, %f, %f, %f, %f, %f\n", tile[getTileAdjacent(tx, ty, tz)], tile[getTileAdjacent(tx-1, ty, tz)], tile[getTileAdjacent(tx+1, ty, tz)], tile[getTileAdjacent(tx, ty-1, tz)], tile[getTileAdjacent(tx, ty+1, tz)], tile[getTileAdjacent(tx, ty, tz-1)], tile[getTileAdjacent(tx, ty, tz+1)]); 
+                }   
+            }
+        }
+    __syncthreads();
+    d_a[getAdjacent(row,col,tensor)] = temp;
+    }
+}
 
 
 
@@ -258,9 +321,9 @@ int main(int argc, char* argv[]){
     checkCudaErrors(cudaMemcpy(d_a, h_a, tensorBytes, cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(d_b, h_b, tensorBytes, cudaMemcpyHostToDevice));
 
-    launchNaiveStencil(d_a, d_b, h_a, tensorBytes);
-    
-    
+    // launchNaiveStencil(d_a, d_b, h_a, tensorBytes);
+
+    // checkArray(h_a, a);
 
 
        // ============  CUDA SETUP ============
@@ -280,15 +343,20 @@ int main(int argc, char* argv[]){
     dim3 dimBlock(TILESIZE, TILESIZE, TILESIZE);
     dim3 dimGrid(gridSize, gridSize, gridSize);
 
+
+    printf("Blocks/Grid = %i\tThreads/Block = %i\tThreads: %i\n", dimGrid.x*dimGrid.y*dimGrid.z, dimBlock.x*dimBlock.y*dimBlock.z, dimGrid.x*dimGrid.y*dimGrid.z*dimBlock.x*dimBlock.y*dimBlock.z);
+
+
     // allocate shared memory dynamically to the kernel.  
     // we need to take into account the tile size, the halo region, and the size of float
+    size_t tileBytes = TILESIZE * TILESIZE * TILESIZE * sizeof(float);    
 
     // ============  KERNEL LAUNCH ============
     checkCudaErrors(cudaEventRecord(start, 0));
 
-    tiledStencil<<<dimGrid, dimBlock>>>(d_a, d_b);
+    tiledStencil<<<dimGrid, dimBlock, tileBytes>>>(d_a, d_b);
     getLastCudaError("Kernel Error");
-    // checkCudaErrors(cudaDeviceSynchronize());
+    checkCudaErrors(cudaDeviceSynchronize());
 
     checkCudaErrors(cudaMemcpy(h_a, d_a, tensorBytes, cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaEventRecord(stop, 0));
@@ -302,9 +370,7 @@ int main(int argc, char* argv[]){
     checkCudaErrors(cudaEventDestroy(stop));
 
 
-
-
-    checkArray(d_a, a);
+    // checkArray(h_a, a);
 
 
 

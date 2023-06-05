@@ -1,6 +1,3 @@
 There were: 0 errors.
-Naive stencil elapsed time: 0.005834 ms.
-A block has 64 threads.
-A grid has 8 blocks.
-There are a total of 512 threads.
-Tiled stencil elapsed time: 0.002259 ms.
+Blocks/Grid = 8	Threads/Block = 64	Threads: 512
+Tiled stencil elapsed time: 0.006938 ms.
