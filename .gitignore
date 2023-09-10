@@ -59,7 +59,7 @@ Mkfile.old
 dkms.conf
 
 # CMake
-*/CMakeLists.txt
+
 *CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
