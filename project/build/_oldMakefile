@@ -1,5 +1,0 @@
-all:
-	nvcc main.cpp cputools.cpp -I /shared/centos7/opencv/3.4.3/include/ -L /shared/centos7/opencv/3.4.3/lib64 -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -o main
-
-clean:
-	rm main

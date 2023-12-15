@@ -6,8 +6,8 @@
 using namespace cv;
 using namespace std;
 
-template <typename T, size_t N> 
-void convCPU(Mat &srcIm, Mat &dstIM, T (&filter)[N], int transpose)
+template <typename T, size_t N>
+void cputools<T, N>::convCPU(Mat &srcIm, Mat &dstIM, T (&filter)[N], int transpose)
 {
     int temp, row_offset, col_offset;
     int halo = N / 2;
