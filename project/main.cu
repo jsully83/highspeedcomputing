@@ -5,7 +5,7 @@
 #include <cuda_runtime.h>
 #include <cooperative_groups.h>
 
-#define N 16384
+// #define N 16384
 #define K 5
 #define RADIUS (K / 2) 
 #define T_BLOCK_SIZE 32
@@ -56,7 +56,7 @@ void initialize_gaussian_kernel(float *h_kernel) {
 }
 
 // Function to perform the convolution on the CPU
-void convolutionCPU(int *input, float *kernel, float *output) {
+void convolutionCPU(int *input, float *kernel, float *output, int N) {
     float temp;
     int r_off;
     int c_off;
@@ -90,7 +90,7 @@ void convolutionCPU(int *input, float *kernel, float *output) {
     }
 }
 
-bool compare_results(float *cpu, float *device){
+bool compare_results(float *cpu, float *device, int N){
     float tol = 1e-3;
     for(int i = 0; i < N * N; i++){
         if(abs(cpu[i] - device[i]) > tol){
@@ -100,7 +100,7 @@ bool compare_results(float *cpu, float *device){
     return true;
 }
 
-__global__ void naiveConvolution(int *d_input, float *d_kernel, float *d_output) {
+__global__ void naiveConvolution(int *d_input, float *d_kernel, float *d_output, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -128,7 +128,7 @@ __global__ void naiveConvolution(int *d_input, float *d_kernel, float *d_output)
 
 __constant__ float const_kernel[K * K];
 
-__global__ void constantConvolution(int *d_input, float *d_output) {
+__global__ void constantConvolution(int *d_input, float *d_output, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -154,7 +154,7 @@ __global__ void constantConvolution(int *d_input, float *d_output) {
     // printf("row=%i col=%i temp[%i]=%d\n", row, col, (row * N + col), temp);
 }
 
-__global__ void tiledConvolution(int *d_input, float *d_output) {
+__global__ void tiledConvolution(int *d_input, float *d_output, int N) {
     // tile index
     int tx = threadIdx.x;
     int ty = threadIdx.y;
@@ -193,7 +193,7 @@ __global__ void tiledConvolution(int *d_input, float *d_output) {
     }
 }
 
-__global__ void unifiedConvolution(int *d_input, float *d_output) {
+__global__ void unifiedConvolution(int *d_input, float *d_output, int N) {
     // tile index
     int tx = threadIdx.x;
     int ty = threadIdx.y;
@@ -233,7 +233,7 @@ __global__ void unifiedConvolution(int *d_input, float *d_output) {
 }
 
 
-__global__ void coopConvolution(int *d_input, float *d_output) {
+__global__ void coopConvolution(int *d_input, float *d_output, int N) {
     // tile index
 
     cg::thread_block cta = cg::this_thread_block();
@@ -276,6 +276,23 @@ __global__ void coopConvolution(int *d_input, float *d_output) {
 }
 
 int main(int argc, char *argv[]) {
+    int N;
+    if (argc < 2) {
+        std::cout << "Please enter the array size N." << std::endl;
+        return 1;
+    }
+    else {
+        N = std::atoi(argv[1]);
+    }
+
+    cudaError_t err = cudaSetDevice(0);
+    if(cudaSuccess != err){
+        std::cerr << "No CUDA device found!" << cudaGetErrorString(err) << std::endl;
+    }
+    else {
+        checkCudaError(cudaSetDevice(0));
+    }
+
 
     // Size in bytes for matrix and kernel
     size_t matrixSize = N * N * sizeof(int);
@@ -294,12 +311,13 @@ int main(int argc, char *argv[]) {
     initialize_gaussian_kernel(h_kernel);
 
     // =============== CPU Convolution ===============
-    // auto startCPU = std::chrono::high_resolution_clock::now();
-    // convolutionCPU(h_input, h_kernel, cpuResult);
-    // auto endCPU = std::chrono::high_resolution_clock::now();
-    // std::chrono::duration<float, std::milli> cpuDuration = endCPU - startCPU;
-    // std::cout << "CPU Convolution time: " << cpuDuration.count() << " ms\n"<< std::endl;
+    auto startCPU = std::chrono::high_resolution_clock::now();
+    convolutionCPU(h_input, h_kernel, cpuResult, N);
+    auto endCPU = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<float, std::milli> cpuDuration = endCPU - startCPU;
+    std::cout << "CPU Convolution time: " << cpuDuration.count() << " ms\n"<< std::endl;
     // print_array(cpuResult, N);
+
     // =============== Naive GPU Convolution ===============
     // device variables
     int *d_input; 
@@ -321,7 +339,7 @@ int main(int argc, char *argv[]) {
     
     // execute cuda command
     for (int i = 0; i < N_TRIALS; i++){
-        naiveConvolution<<<gridDim, blockDim>>>(d_input, d_kernel, d_output);
+        naiveConvolution<<<gridDim, blockDim>>>(d_input, d_kernel, d_output, N);
         checkCudaError(cudaPeekAtLastError());
         checkCudaError(cudaDeviceSynchronize());
     }
@@ -343,7 +361,7 @@ int main(int argc, char *argv[]) {
 
     // execute cuda command
     for (int i = 0; i < N_TRIALS; i++){
-        constantConvolution<<<gridDim, blockDim>>>(d_input, d_output);
+        constantConvolution<<<gridDim, blockDim>>>(d_input, d_output, N);
         checkCudaError(cudaPeekAtLastError());
         checkCudaError(cudaDeviceSynchronize());
     }
@@ -365,7 +383,7 @@ int main(int argc, char *argv[]) {
 
     // execute cuda command
     for (int i = 0; i < N_TRIALS; i++){
-        tiledConvolution<<<tiledGridDim, tiledBlockDim>>>(d_input, d_output);
+        tiledConvolution<<<tiledGridDim, tiledBlockDim>>>(d_input, d_output, N);
         checkCudaError(cudaPeekAtLastError());
         checkCudaError(cudaDeviceSynchronize());
     }
@@ -403,7 +421,7 @@ int main(int argc, char *argv[]) {
 
     // // execute cuda command
     for (int i = 0; i < N_TRIALS; i++){
-        unifiedConvolution<<<tiledGridDim, tiledBlockDim>>>(array, unifiedResult);
+        unifiedConvolution<<<tiledGridDim, tiledBlockDim>>>(array, unifiedResult, N);
         checkCudaError(cudaPeekAtLastError());
         checkCudaError(cudaDeviceSynchronize());
     }
@@ -425,7 +443,7 @@ int main(int argc, char *argv[]) {
 
     // // execute cuda command
     for (int i = 0; i < N_TRIALS; i++){
-        coopConvolution<<<tiledGridDim, tiledBlockDim>>>(array, coopResult);
+        coopConvolution<<<tiledGridDim, tiledBlockDim>>>(array, coopResult, N);
         checkCudaError(cudaPeekAtLastError());
         checkCudaError(cudaDeviceSynchronize());
     }

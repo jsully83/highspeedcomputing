@@ -170,6 +170,14 @@ void col_convolutionGPU(float* in, float* out){
 
 int main(int argc, char *argv[]) {
 
+    cudaError_t err = cudaSetDevice(0);
+    if(cudaSuccess != err){
+        std::cerr << "No CUDA device found!" << cudaGetErrorString(err) << std::endl;
+    }
+    else {
+        checkCudaError(cudaSetDevice(0));
+    }
+
     // Size in bytes for matrix and kernel
     size_t matrixSize = N * N * sizeof(float);
 
