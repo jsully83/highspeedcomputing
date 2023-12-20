@@ -5,14 +5,14 @@
 #include <cuda_runtime.h>
 #include <cooperative_groups.h>
 
-#define N 128
+#define N 16384
 #define K 5
 #define RADIUS (K / 2) 
 #define T_BLOCK_SIZE 32
 #define TILE_SIZE_OUT (T_BLOCK_SIZE - (K - 1))
 #define T_GRID_SIZE ((N - 1) / TILE_SIZE_OUT + 1)
 
-#define N_TRIALS 10000
+#define N_TRIALS 100
 
 namespace cg = cooperative_groups;
 
@@ -30,7 +30,8 @@ void __checkCudaErrors(cudaError err, const char *file, const int line) {
 void print_array(float *array, int size){
     for (int i = 0; i < size; i++){
         for (int j = 0; j < size; j++){
-            std::cout << i * size + j << ": "<<array[i * size + j] << " ";
+            // std::cout << i * size + j << ": "<<array[i * size + j] << " ";
+            std::cout <<array[i * size + j] << " ";
         }
         std::cout << std::endl;
     }
@@ -38,11 +39,10 @@ void print_array(float *array, int size){
 
 void initialize_gaussian_kernel(float *h_kernel) {
     float sum = 0.0;
-    float stdDev = 1.0;
 
     for (int x = -RADIUS; x <= RADIUS; x++) {
         for (int y = -RADIUS; y <= RADIUS; y++) {
-            float value = exp(-(x * x + y * y) / (2 * stdDev * stdDev)) / sqrt(2 * M_PI * stdDev * stdDev);
+            float value = exp(-(x * x + y * y)/2) / (2 * M_PI);
             h_kernel[(x + RADIUS) * K + (y + RADIUS)] = value;
             sum += value;
         }
@@ -275,46 +275,6 @@ __global__ void coopConvolution(int *d_input, float *d_output) {
     }
 }
 
-__global__ void rowConvolution(int *d_input, float *d_output) {
-    // tile index
-    int tx = threadIdx.x;
-    int ty = threadIdx.y;
-
-    // output index
-    int row_out = blockIdx.y * TILE_SIZE_OUT + ty;
-    int col_out = blockIdx.x * TILE_SIZE_OUT + tx;
-
-    // input index
-    int row_in = row_out - RADIUS;
-    int col_in = col_out - RADIUS;
-    
-    __shared__ float input_sh[T_BLOCK_SIZE][T_BLOCK_SIZE];
-    
-    if((row_in >= 0) && (row_in < N) && (col_in >= 0) && (col_in < N)){
-        input_sh[ty][tx] = d_input[row_in * N + col_in];
-    }
-    else{
-        input_sh[ty][tx] = 0.0f;
-    }
-    __syncthreads();
-    
-    float temp = 0.0f;
-    if((ty < TILE_SIZE_OUT) && (tx < TILE_SIZE_OUT)){
-        #pragma unroll
-        for(int i = 0; i < K; i++){
-            temp += input_sh[i+ty][tx] * const_kernel[i];
-        }
-
-        if((row_out < N) && (col_out < N)){
-            d_output[row_out * N + col_out] = temp;
-        }
-    }
-}
-
-
-
-
-
 int main(int argc, char *argv[]) {
 
     // Size in bytes for matrix and kernel
@@ -330,16 +290,16 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < N * N; i++) {
         h_input[i] = rand() % 255;
     }
-    print_array(h_input, N);
+    // print_array(h_input, N);
     initialize_gaussian_kernel(h_kernel);
 
-    // // =============== CPU Convolution ===============
+    // =============== CPU Convolution ===============
     // auto startCPU = std::chrono::high_resolution_clock::now();
     // convolutionCPU(h_input, h_kernel, cpuResult);
     // auto endCPU = std::chrono::high_resolution_clock::now();
     // std::chrono::duration<float, std::milli> cpuDuration = endCPU - startCPU;
     // std::cout << "CPU Convolution time: " << cpuDuration.count() << " ms\n"<< std::endl;
-
+    // print_array(cpuResult, N);
     // =============== Naive GPU Convolution ===============
     // device variables
     int *d_input; 
