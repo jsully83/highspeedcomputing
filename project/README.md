@@ -3,13 +3,13 @@
 ### First start an interactive GPU node by sourcing runInteractiveGPU.sh
 
 ```
+cd /highspeedcomputing/project
 . runInteractiveGPU.sh
 ```
 
 ### This code uses gcc 11.1 and cuda 12.1.  To load these dependencies source the start up script
 
 ```
-cd /highspeedcomputing/project
 . startup.sh
 ```
 
@@ -19,7 +19,7 @@ cd /highspeedcomputing/project
 make
 ```
 
-### Run the naive code by using a command line argument to specify the matrix size. <br>
+### Run the naive code by using a command line argument to specify the matrix size.
 
 
 ```
@@ -47,7 +47,7 @@ make
 ### Run the tile and separable filter code by defining command line arguments for matrix size then filter size
 
 ```
-nvprof ./tiles 1024 5
+nvprof ./tiles 1024 7
 ```
 
 ### the output will be 
